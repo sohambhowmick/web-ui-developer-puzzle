@@ -12,11 +12,6 @@ export const getBooksState = createFeatureSelector<BooksPartialState, State>(
 
 const { selectAll } = booksAdapter.getSelectors();
 
-export const getBooksLoading = createSelector(
-  getBooksState,
-  (state: State) => state.loading
-);
-
 export const getBooksLoaded = createSelector(
   getBooksState,
   (state: State) => state.loaded

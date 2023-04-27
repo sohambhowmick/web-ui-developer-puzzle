@@ -38,25 +38,4 @@ describe('Books Selectors', () => {
       expect(result).toEqual('Unknown error');
     });
   });
-
-  describe('Books Selectors Loading', () => {
-    beforeEach(() => {
-      state = {
-        books: booksAdapter.addMany(
-          [createBook('A'), createBook('B'), createBook('C')],
-          {
-            ...initialState,
-            error: 'Unknown error',
-            loading: true
-          }
-        )
-      };
-    });
-
-    it("getBooksLoading() should return the current 'loading' status", () => {
-      const result = BooksSelectors.getBooksLoading(state);
-
-      expect(result).toBe(true);
-    });
-  });
 });
