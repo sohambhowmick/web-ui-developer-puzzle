@@ -22,6 +22,11 @@ export const failedAddToReadingList = createAction(
   props<{ book: Book }>()
 );
 
+export const undoAddToReadingList = createAction(
+  '[Reading List API] Undo add to list',
+  props<{ book: Book }>()
+);
+
 export const confirmedAddToReadingList = createAction(
   '[Reading List API] Confirmed add to list',
   props<{ book: Book }>()
@@ -29,6 +34,11 @@ export const confirmedAddToReadingList = createAction(
 
 export const removeFromReadingList = createAction(
   '[Books Search Results] Remove from list',
+  props<{ item: ReadingListItem }>()
+);
+
+export const undoRemoveFromReadingList = createAction(
+  '[Reading List API] Undo remove from list',
   props<{ item: ReadingListItem }>()
 );
 
