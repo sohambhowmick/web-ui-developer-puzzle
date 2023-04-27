@@ -10,6 +10,7 @@ D. Increased font size of the book content info of each item in "My Reading List
 E. Removed OnInit from TotalCountComponent.
 F. Renamed variables and re-formatted code in BookSearchComponent view/HTML and ReadingListComponent view/HTML.
 G. Added spinner to be shown while loading books after search.
+H. Implemented error handling.
 
 3. *** ACCESSIBILITY ***
 A. Added "aria-label" property for <button/>.

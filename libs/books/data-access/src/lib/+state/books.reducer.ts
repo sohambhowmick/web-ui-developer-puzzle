@@ -7,9 +7,8 @@ import * as BooksActions from './books.actions';
 export const BOOKS_FEATURE_KEY = 'books';
 
 export interface State extends EntityState<Book> {
-  loading: boolean;
   loaded: boolean;
-  error?: string | null;
+  error?: any | null;
   searchTerm?: string;
 }
 
@@ -20,8 +19,7 @@ export interface BooksPartialState {
 export const booksAdapter: EntityAdapter<Book> = createEntityAdapter<Book>();
 
 export const initialState: State = booksAdapter.getInitialState({
-  loading: false,
-  loaded: false
+  loaded: true
 });
 
 const booksReducer = createReducer(
@@ -29,19 +27,18 @@ const booksReducer = createReducer(
   on(BooksActions.searchBooks, (state, { term }) => ({
     ...state,
     searchTerm: term,
-    loading: true,
     loaded: false,
     error: null
   })),
   on(BooksActions.searchBooksSuccess, (state, action) =>
     booksAdapter.setAll(action.books, {
       ...state,
-      loading: false,
       loaded: true
     })
   ),
   on(BooksActions.searchBooksFailure, (state, { error }) => ({
     ...state,
+    loaded: true,
     error
   })),
   on(BooksActions.clearSearch, state => booksAdapter.removeAll(state))
