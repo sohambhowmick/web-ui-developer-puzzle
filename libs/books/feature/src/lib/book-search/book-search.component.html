@@ -6,6 +6,7 @@
       type="search"
       placeholder="Search for books to add to your reading list"
       formControlName="term"
+      aria-label="Search for books"
     />
     <button mat-icon-button matSuffix>
       <mat-icon>search</mat-icon>
@@ -13,33 +14,42 @@
   </mat-form-field>
 </form>
 
+<div class="empty" *ngIf="showSpinner">
+  <mat-progress-spinner *ngIf="showSpinner"
+    color="accent"
+    mode="indeterminate"
+    value="50"
+  ></mat-progress-spinner>
+</div>
+
 <ng-container *ngIf="searchTerm; else empty">
   <div class="book-grid">
-    <div class="book" data-testing="book-item" *ngFor="let b of books">
-      <div class="book--title">
-        {{ b.title }}
-      </div>
+    <div class="book" data-testing="book-item" *ngFor="let book of books">
+      <h4 class="book--title">
+        {{ book.title }}
+      </h4>
       <div class="book--content">
         <div class="book--content--cover">
-          <img src="{{ b.coverUrl }}" />
-        </div>
-        <div class="book--content--info">
-          <div><strong>Author:</strong> {{ b.authors.join(',') }}</div>
-          <div><strong>Publisher:</strong> {{ b.publisher }}</div>
-          <div>
-            <strong>Published:</strong> {{ formatDate(b.publishedDate) }}
-          </div>
-          <p [innerHTML]="b.description"></p>
+          <img src="{{ book.coverUrl }}" [alt]="book.title" [attr.aria-labelledby]="book.title"/>
           <div>
             <button
               mat-flat-button
               color="primary"
-              (click)="addBookToReadingList(b)"
-              [disabled]="b.isAdded"
+              (click)="addBookToReadingList(book)"
+              [disabled]="book.isAdded"
+              aria-label="Want to Read"
             >
               Want to Read
             </button>
           </div>
+        </div>
+        <div class="book--content--info">
+          <div><strong>Author:</strong> {{ book.authors.join(',') }}</div>
+          <div><strong>Publisher:</strong> {{ book.publisher }}</div>
+          <div>
+            <strong>Published:</strong> {{ formatDate(book.publishedDate) }}
+          </div>
+          <p [innerHTML]="book.description"></p>
         </div>
       </div>
     </div>

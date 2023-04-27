@@ -41,5 +41,19 @@ describe('BooksEffects', () => {
 
       httpMock.expectOne('/api/books/search?q=').flush([createBook('A')]);
     });
+
+    it('should throw error', done => {
+      const error: ErrorEvent = new ErrorEvent('error');
+      actions = new ReplaySubject();
+      actions.next(BooksActions.searchBooks({ term: '' }));
+
+      const bookActions = BooksActions.searchBooksFailure(error);
+      effects.searchBooks$.subscribe(action => {
+        expect(action.type).toEqual(bookActions.type);
+        done();
+      });
+
+      httpMock.expectOne('/api/books/search?q=').error(error);
+    });
   });
 });

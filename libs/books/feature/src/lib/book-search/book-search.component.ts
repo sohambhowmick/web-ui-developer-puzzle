@@ -17,6 +17,7 @@ import { Book } from '@tmo/shared/models';
 })
 export class BookSearchComponent implements OnInit {
   books: ReadingListBook[];
+  showSpinner = false;
 
   searchForm = this.fb.group({
     term: ''
@@ -33,11 +34,12 @@ export class BookSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.select(getAllBooks).subscribe(books => {
+      this.showSpinner = false;
       this.books = books;
     });
   }
 
-  formatDate(date: void | string) {
+  formatDate(date: void | string): string {
     return date
       ? new Intl.DateTimeFormat('en-US').format(new Date(date))
       : undefined;
@@ -55,6 +57,7 @@ export class BookSearchComponent implements OnInit {
   searchBooks() {
     if (this.searchForm.value.term) {
       this.store.dispatch(searchBooks({ term: this.searchTerm }));
+      this.showSpinner = true;
     } else {
       this.store.dispatch(clearSearch());
     }
