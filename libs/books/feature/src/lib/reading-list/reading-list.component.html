@@ -13,6 +13,9 @@
       <div class="reading-list-item--details--author">
         {{ book.authors.join(',') }}
       </div>
+      <div *ngIf="book.finished" class="reading-list-item--details--finished">
+        <em>Finished: {{ book.finishedDate | date: 'medium' }}</em>
+      </div>
     </div>
     <div>
       <button
