@@ -1,7 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { Book } from '@tmo/shared/models';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class BooksService {
@@ -29,6 +29,9 @@ export class BooksService {
               coverUrl: item.volumeInfo?.imageLinks?.thumbnail
             };
           });
+        }),
+        catchError((error) => {
+          throw error;
         })
       );
   }
