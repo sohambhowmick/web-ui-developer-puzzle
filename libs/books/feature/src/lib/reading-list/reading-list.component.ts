@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getReadingList, removeFromReadingList } from '@tmo/books/data-access';
+import {
+  getReadingList,
+  removeFromReadingList,
+  undoRemoveFromReadingList
+} from '@tmo/books/data-access';
+import { take } from 'rxjs/operators';
 import {ReadingListItem} from "@tmo/shared/models";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'tmo-reading-list',
@@ -11,9 +17,23 @@ import {ReadingListItem} from "@tmo/shared/models";
 export class ReadingListComponent {
   readingList$ = this.store.select(getReadingList);
 
-  constructor(private readonly store: Store) {}
+  constructor(
+    private readonly store: Store,
+    private snackbar: MatSnackBar
+  ) {}
 
   removeFromReadingList(item: ReadingListItem) {
     this.store.dispatch(removeFromReadingList({ item }));
+    const snackBar = this.snackbar.open(
+      `${item.title} removed from your reading list!`,
+      'Undo',
+      { duration: 5000 }
+    );
+    snackBar
+      .onAction()
+      .pipe(take(1))
+      .subscribe(() =>
+        this.store.dispatch(undoRemoveFromReadingList({ item }))
+      );
   }
 }
